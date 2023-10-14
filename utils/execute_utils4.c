@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 19:14:47 by jabreu-d          #+#    #+#             */
-/*   Updated: 2023/10/07 19:32:01 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2023/10/14 01:25:08 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	handle_infile(char *file)
 {
 	int	fd;
 
-	printf("file = %s\n", file);
+	printf("file = %s\n", file); // Retirar
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
@@ -80,22 +80,6 @@ void	better_args(t_utils_hold *utils_hold)
 	return ;
 }
 
-void	free_tmp(t_utils_hold *utils_tmp)
-{
-	t_lexer	*current;
-	t_lexer	*next;
-
-	current = utils_tmp->lexer_list;
-	while (current)
-	{
-		next = current->next;
-		free(current->str);
-		free(current);
-		current = next;
-	}
-	free(utils_tmp->args);
-}
-
 int	check_redirections(t_simple_cmds *cmd, t_utils_hold *utils_hold)
 {
 	t_lexer			*start;
@@ -109,32 +93,35 @@ int	check_redirections(t_simple_cmds *cmd, t_utils_hold *utils_hold)
 	tmp = utils_tmp.lexer_list;
 	while (cmd->redirections)
 	{
-		if (cmd->redirections->token == 3)
-		{
-			while (tmp->token != 3)
-				tmp = tmp->next;
-			if (handle_infile(tmp->next->str))
-				return (1);
-		}
-		else if (cmd->redirections->token == 2
-			|| cmd->redirections->token == 4)
-		{
-			while (tmp->token != 2
-				&& tmp->token != 4)
-				tmp = tmp->next;
-			if (handle_outfile(cmd->redirections, tmp->next->str))
-				return (1);
-		}
-		else if (cmd->redirections->token == 5)
-		{
-			while (tmp->token != 5)
-				tmp = tmp->next;
-			if (handle_infile(tmp->next->str))
-				return (1);
-		}
-		cmd->redirections = cmd->redirections->next;
+		if (check_redirections_utils(cmd, tmp) == 1)
+			return (1);
 	}
-	free_tmp(&utils_tmp);
-	cmd->redirections = start;
+	return (free_tmp(&utils_tmp), cmd->redirections = start, 0);
+}
+
+int	check_redirections_utils(t_simple_cmds *cmd, t_lexer *tmp)
+{
+	if (cmd->redirections->token == 3)
+	{
+		while (tmp->token != 3)
+			tmp = tmp->next;
+		if (handle_infile(tmp->next->str))
+			return (1);
+	}
+	else if (cmd->redirections->token == 2 || cmd->redirections->token == 4)
+	{
+		while (tmp->token != 2 && tmp->token != 4)
+			tmp = tmp->next;
+		if (handle_outfile(cmd->redirections, tmp->next->str))
+			return (1);
+	}
+	else if (cmd->redirections->token == 5)
+	{
+		while (tmp->token != 5)
+			tmp = tmp->next;
+		if (handle_infile(tmp->next->str))
+			return (1);
+	}
+	cmd->redirections = cmd->redirections->next;
 	return (0);
 }

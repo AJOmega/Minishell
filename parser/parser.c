@@ -25,18 +25,27 @@ t_parser_utils	init_parser(t_lexer *lexer_list, t_utils_hold *utils_hold)
 
 t_simple_cmds	*init_cmd(t_parser_utils *parser_utils)
 {
-	char	**str;
-	int		i;
-	int		arg_size;
-	t_lexer	*tmp;
+	char			*str;
+	int				arg_size;
+	t_lexer			*tmp;
+	t_simple_cmds	*result;
 
-	i = 0;
 	rm_redirections(parser_utils);
 	arg_size = count_args(parser_utils->lexer_list);
 	str = ft_calloc(arg_size + 1, sizeof(char *));
 	if (!str)
 		return (NULL);
 	tmp = parser_utils->lexer_list;
+	result = init_cmd_utils(parser_utils, str, arg_size, tmp);
+	return (result);
+}
+
+t_simple_cmds	*init_cmd_utils(t_parser_utils *parser_utils,
+							char *str, int arg_size, t_lexer *tmp)
+{
+	int	i;
+
+	i = 0;
 	while (arg_size > 0 && tmp)
 	{
 		if (tmp->str)
@@ -55,6 +64,7 @@ t_simple_cmds	*init_cmd(t_parser_utils *parser_utils)
 		}
 		arg_size--;
 	}
+	tmp = parser_utils->lexer_list;
 	str[i] = NULL;
 	return (ft_simple_cmdsnew(str,
 			parser_utils->num_redirections, parser_utils->redirections));

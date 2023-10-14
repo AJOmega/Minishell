@@ -60,10 +60,7 @@ int	cd_minus(t_utils_hold *utils_hold)
 	char	*tmp;
 
 	if (!utils_hold->old_pwd)
-	{
-		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
-		return (-1);
-	}
+		return (ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2), -1);
 	else
 	{
 		tmp = ft_strdup(utils_hold->old_pwd);

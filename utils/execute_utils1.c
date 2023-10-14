@@ -92,3 +92,19 @@ void	handle_cmd(t_simple_cmds *cmd, t_utils_hold *utils_hold)
 	free_array(utils_hold->envp);
 	clean_exit(utils_hold, exit_code);
 }
+
+void	free_tmp(t_utils_hold *utils_tmp)
+{
+	t_lexer	*current;
+	t_lexer	*next;
+
+	current = utils_tmp->lexer_list;
+	while (current)
+	{
+		next = current->next;
+		free(current->str);
+		free(current);
+		current = next;
+	}
+	free(utils_tmp->args);
+}

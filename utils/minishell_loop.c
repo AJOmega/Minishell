@@ -34,16 +34,13 @@ char	*replace_env_vars(char *args, char **envp)
 		return (args);
 	i = 0;
 	in_quotes = false;
-	while (args[i] != '\0')
+	while (args[i++] != '\0')
 	{
 		if (args[i] == '\"')
 			in_quotes = !in_quotes;
 		if (args[i] == '\'' && in_quotes == false)
-		{
-			i++;
-			while (args[i] != '\'')
-				i++;
-		}
+			while (args[++i] != '\'')
+				;
 		if (args[i] == '$')
 		{
 			var_name = take_var_name(args, i);
@@ -51,10 +48,8 @@ char	*replace_env_vars(char *args, char **envp)
 			args = detect_dollar_sigs(args, var_value, var_name, &i);
 			free(var_name);
 		}
-		i++;
 	}
-	args[i] = '\0';
-	return (args);
+	return (args[i] = '\0', args);
 }
 
 int	minishell_loop(t_utils_hold *utils_hold)

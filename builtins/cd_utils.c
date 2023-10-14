@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 18:38:04 by jabreu-d          #+#    #+#             */
-/*   Updated: 2023/10/07 19:29:14 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2023/10/13 23:33:12 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ void	update_pwd(t_utils_hold *utils_hold)
 			break ;
 		}
 	}
+	update_oldpwd(utils_hold);
+}
+
+void	update_oldpwd(t_utils_hold *utils_hold)
+{
+	int		i;
+	char	*tmp;
+
 	i = 0;
 	while (utils_hold->envp[i++])
 	{
@@ -36,7 +44,7 @@ void	update_pwd(t_utils_hold *utils_hold)
 		{
 			tmp = ft_strdup(utils_hold->envp[i] + 7);
 			free(utils_hold->envp[i]);
-			utils_hold->envp[i] = ft_strjoin("OLDPWD=", utils_hold->old_pwd);
+			utils_hold->envp[i] = ft_strjoin("OLDPWD=", utils_hold->pwd);
 			free(tmp);
 			break ;
 		}

@@ -116,6 +116,8 @@ void			lexer_delete_one(t_lexer **lexer_list, int index_list);
 int				check_error(t_utils_hold *utils_hold);
 t_parser_utils	init_parser(t_lexer *lexer_list, t_utils_hold *utils_hold);
 t_simple_cmds	*init_cmd(t_parser_utils *parser_utils);
+t_simple_cmds	*init_cmd_utils(t_parser_utils *parser_utils, \
+				char *str, int arg_size, t_lexer *tmp);
 void			rm_redirections(t_parser_utils *parser_utils);
 int				add_redirection(t_lexer *tmp, t_parser_utils *parser_utils);
 t_lexer			*ft_newlexer(char *str, int token);
@@ -197,6 +199,7 @@ int				ft_cd(t_utils_hold *utils_hold);
 int				cd_home(t_utils_hold *utils_hold);
 int				ft_strcharcmp2(char *s1, const char *s2, char c);
 void			update_pwd(t_utils_hold *utils_hold);
+void			update_oldpwd(t_utils_hold *utils_hold);
 int				check_cd_args(t_utils_hold *utils_hold);
 int				check_n_args(t_utils_hold *utils_hold);
 int				cd_minus(t_utils_hold *utils_hold);
@@ -236,6 +239,7 @@ char			*get_env_value(char *env_name, char **envp);
 void			print_env(t_utils_hold *utils_hold, int *i);
 int				check_redirections(t_simple_cmds *cmd \
 					, t_utils_hold *utils_hold);
+int				check_redirections_utils(t_simple_cmds *cmd, t_lexer *tmp);
 void			clean_exit(t_utils_hold *utils_hold, int exit_code);
 
 /*

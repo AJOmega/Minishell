@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 18:49:47 by jabreu-d          #+#    #+#             */
-/*   Updated: 2023/10/07 18:49:59 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2023/10/13 23:25:32 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,7 @@ int	ft_strcharcmp2(char *s1, const char *s2, char c)
 	i = 0;
 	flag = 0;
 	if (s1[ft_strlen(s1)] == c)
-	{
-		free(s1);
-		return (1);
-	}
+		return (free(s1), 1);
 	else
 	{
 		new_s1 = ft_strdup2(s1, c);
@@ -57,10 +54,7 @@ int	ft_strcharcmp2(char *s1, const char *s2, char c)
 	while (s1[i] && s2[i] && s1[i] != c && s2[i] != c)
 	{
 		if (s1[i] != s2[i])
-		{
-			free(new_s1);
-			return (0);
-		}
+			return (free(new_s1), 0);
 		i++;
 	}	
 	if (s1[i] == c && s2[i] == c)
